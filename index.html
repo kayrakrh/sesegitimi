@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ses Antrenmanı</title>
+<style>
+:root{--ink:#3b2f4a;--card:rgba(255,255,255,.74);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:linear-gradient(180deg,#8fdcfc 0%,#bfe9fb 22%,#f9d3dc 48%,#fff 62%,#f9d3dc 76%,#bfe9fb 90%,#8fdcfc 100%) fixed}
+.app{max-width:480px;margin:0 auto;padding:20px 16px 40px}
+.card{background:var(--card);border-radius:26px;padding:22px 18px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(91,206,250,.25);text-align:center}
+.num{font-size:68px;font-weight:800;line-height:1;background:linear-gradient(90deg,#3fb8e8,#e37f97);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card p{margin:8px 0 0;font-size:18px;font-weight:600}
+.card small{display:block;margin-top:6px;opacity:.75}
+h2{font-size:16px;margin:22px 4px 10px}
+.chips{display:flex;gap:8px}
+.chip{flex:1;border:2px solid transparent;background:var(--card);border-radius:16px;padding:12px 4px;font-size:15px;font-weight:700;color:var(--ink);cursor:pointer}
+.chip.on{border-color:#e37f97;background:#fff}
+.chip small{display:block;font-weight:500;font-size:12px;opacity:.7}
+.hint{font-size:13px;margin:8px 4px 0;opacity:.75}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:12px;background:var(--card);border:2px solid transparent;border-radius:18px;padding:12px 14px;cursor:pointer;text-align:left}
+.item.on{border-color:#5BCEFA;background:#fff}
+.badge{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:800;border:2px dashed #c9a3b1;color:#c9a3b1}
+.on .badge{border:0;color:#fff;background:linear-gradient(135deg,#5BCEFA,#F5A9B8)}
+.item span{flex:1;font-size:15px;line-height:1.35}
+.del{border:0;background:none;font-size:20px;color:#b46a80;padding:4px 8px;cursor:pointer}
+.add{display:flex;gap:8px;margin-top:12px}
+.add input{flex:1;min-width:0;border:2px solid #fff;background:rgba(255,255,255,.85);border-radius:16px;padding:12px 14px;font-size:15px;color:var(--ink)}
+.btn{border:0;border-radius:18px;padding:15px 22px;font-size:16px;font-weight:800;color:#fff;background:linear-gradient(90deg,#5BCEFA,#F5A9B8);cursor:pointer;width:100%}
+.btn.sm{width:auto;padding:0 20px}
+.btn:disabled{opacity:.45}
+.ghost{background:none;border:0;color:#7a5f8a;font-size:14px;margin-top:14px;cursor:pointer;text-decoration:underline}
+.step{font-size:14px;font-weight:700;opacity:.7}
+.title{font-size:24px;font-weight:800;margin:14px 0 8px;line-height:1.25}
+.desc{font-size:15px;opacity:.85;line-height:1.5}
+.time{font-size:64px;font-weight:800;margin:20px 0 10px;font-variant-numeric:tabular-nums}
+.bar{height:10px;border-radius:9px;background:rgba(255,255,255,.8);overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#5BCEFA,#F5A9B8);transition:width .5s linear}
+.big{font-size:30px;font-weight:800;margin:16px 0 10px;line-height:1.3}
+.hide{display:none}
+.sent{font-size:26px;font-weight:800;line-height:1.4;margin:22px 0 8px;word-break:break-word}
+.rt{font-size:44px;font-weight:800;margin:16px 0 12px;font-variant-numeric:tabular-nums}
+.btn.recb{background:linear-gradient(90deg,#f4a3b5,#e0607e)}
+.rc-item{background:rgba(255,255,255,.85);border-radius:16px;padding:10px 12px;margin-top:10px;text-align:left;font-size:13px;font-weight:700}
+.rc-item audio{width:100%;margin-top:6px}
+.err{font-size:13px;color:#b23a5a;margin:8px 0}
+.poem{white-space:pre-line;font-size:18px;line-height:1.75;margin:18px 0 6px;font-style:italic}
+.pt{font-size:13px;opacity:.7;margin-top:14px;font-weight:700}
+.word{font-size:46px;font-weight:800;margin:22px 0 6px;word-break:break-word;background:linear-gradient(90deg,#3fb8e8,#e37f97);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wc{font-size:13px;opacity:.7;margin-bottom:14px}
+.btn.alt{background:#fff;color:#c2607a;border:2px solid #F5A9B8;margin-bottom:12px}
+.rem{margin-top:14px;text-align:left}
+.rem .row{display:flex;align-items:center;gap:10px;font-size:15px}
+.rem input[type=checkbox]{width:22px;height:22px;accent-color:#e37f97}
+.rem select{border:2px solid #fff;background:rgba(255,255,255,.9);border-radius:12px;padding:8px;font-size:14px;color:var(--ink);margin:0 4px 0 2px}
+.rem .set{margin-top:12px;font-size:14px;line-height:2.4}
+.rem .ghost{margin:0 0 0 6px}
+.ban{position:fixed;left:12px;right:12px;top:calc(12px + env(safe-area-inset-top,0px));max-width:456px;margin:0 auto;z-index:9;background:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 8px 28px rgba(0,0,0,.2);border-left:6px solid #F5A9B8;font-size:15px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="ban hide" id="ban"></div>
+<div id="home">
+  <div class="card">
+    <div class="num" id="num">0</div>
+    <p id="msg"></p><small id="sub"></small>
+  </div>
+  <div class="card rem">
+    <label class="row"><input type="checkbox" id="remOn"><b>🔔 Bildirimler</b></label>
+    <div class="hint" id="remNote"></div>
+  </div>
+  <h2>⏱️ Bugün ne kadar antrenman yapmak istersin?</h2>
+  <div class="chips" id="chips"></div>
+  <div class="hint" id="cnt"></div>
+  <h2>💜 Pratikleri seç (sırayla dokun)</h2>
+  <div class="list" id="list"></div>
+  <div class="add">
+    <input id="inp" placeholder="Kendi pratiğini ekle…" maxlength="80">
+    <button class="btn sm" id="addBtn">Ekle</button>
+  </div>
+  <div style="margin-top:22px"><button class="btn" id="start">Antrenmana başla</button></div>
+</div>
+
+<div id="run" class="hide">
+  <div class="card">
+    <div class="step" id="step"></div>
+    <div class="title" id="ttl"></div>
+    <div class="desc" id="dsc"></div>
+    <div id="pm" class="hide"><div class="pt" id="pt"></div><div class="poem" id="ptx"></div></div>
+    <div id="rc" class="hide"><div class="rt" id="rt">00:00</div><button class="btn" id="rbtn">🎙️ Kaydı başlat</button><div class="err" id="rerr"></div><div id="rl"></div></div>
+    <div id="sc" class="hide"><div class="sent" id="stx"></div><div class="wc" id="scnt"></div><button class="btn alt" id="snext">Okudum, sıradaki cümle ➜</button></div>
+    <div id="wd" class="hide"><div class="word" id="wtxt"></div><div class="wc" id="wcnt"></div><button class="btn alt" id="wnext">Sıradaki kelime ➜</button></div>
+    <div class="time" id="tm"></div>
+    <div class="bar"><i id="bar"></i></div>
+    <button class="btn" id="next">Bitirdim ✓</button>
+    <button class="ghost" id="quit">Antrenmanı bırak</button>
+  </div>
+</div>
+
+<div id="fin" class="hide">
+  <div class="card">
+    <div style="font-size:54px">🏳️‍⚧️</div>
+    <div class="big">Günlük antremanınız bitti canım 💜</div>
+    <div class="num" id="num2" style="font-size:56px"></div>
+    <p id="msg2"></p>
+    <div style="margin-top:20px"><button class="btn" id="home2">Ana sayfaya dön</button></div>
+  </div>
+</div>
+
+</div>
+<script>
+const DEF=[
+{id:"d0",t:"Isınma: dudak titreşimi ve mırıldanma",d:"Dudaklarını titreterek “brrr” yap, ardından hafifçe mırıldan. Boğazını sıkma."},
+{id:"d1",t:"Sirenleme",d:"Alçak bir sesten yükseğe, sonra tekrar aşağı yumuşakça kay. Zorlama."},
+{id:"d2",t:"Rezonans: “mmm” çalışması",d:"“Mmm” diyerek titreşimi burun ve yüzünde hissetmeye çalış."},
+{id:"d3",t:"Kelime pratiği",d:"Ekrandaki kelimeyi yumuşak, hafif ve rahat bir sesle söyle. Hazır olunca sıradaki kelimeye geç."},
+{id:"d4",t:"Sesli okuma: günün şiiri",d:"Bugünün şiirini yavaş, yumuşak ve melodik bir sesle, sesli oku. İstersen birkaç kez tekrar et."},
+{id:"d5",t:"Kendini kaydet ve dinle",d:"Mikrofon düğmesine bas, birkaç cümle söyle, kaydı durdur ve geri dinle. Yeni kayıtlar alıp sesini karşılaştırabilirsin."},
+{id:"d6",t:"Günlük cümle denemesi",d:"Cümleyi sesli, yumuşak ve doğal bir tonda oku. Bitirince sıradaki cümleye geç."}];
+const OPTS=[[10,2],[15,3],[20,4],[30,5]];
+const KEY="sesAntrenmani.v2";
+const pad=n=>String(n).padStart(2,"0");
+const ds=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+let S={custom:[],days:{},dur:15,sel:[],rem:{on:false,from:9,to:21,every:3},lastRem:0};
+try{const o=JSON.parse(localStorage.getItem(KEY)||"null");if(o)S=Object.assign(S,o);
+ else{const v=JSON.parse(localStorage.getItem("sesAntrenmani.v1")||"null");
+ if(v&&v.done)for(const k in v.done)if(v.done[k].length)S.days[k]=1}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const all=()=>[...DEF.map(p=>({...p})),...S.custom];
+const maxN=()=>OPTS.find(o=>o[0]===S.dur)[1];
+function streak(){let d=new Date();if(!S.days[ds(d)])d.setDate(d.getDate()-1);let c=0;while(S.days[ds(d)]){c++;d.setDate(d.getDate()-1)}return c}
+function show(v){["home","run","fin"].forEach(x=>$(x).classList.toggle("hide",x!==v));window.scrollTo(0,0)}
+function streakText(){const c=streak(),t=!!S.days[ds(new Date())];return{c,m:c===0?"Bugün ilk adımı atalım!":c+" gündür ses antrenmanı yapıyorsun",s:c===0?"Bir antrenman tamamla, sayaç başlasın.":(t?"Bugünün antrenmanı tamam, harikasın! ✨":"Bugün henüz antrenman yapmadın, seriyi koru!")}}
+function renderHome(){
+  const st=streakText();$("num").textContent=st.c;$("msg").textContent=st.m;$("sub").textContent=st.s;
+  const n=maxN();S.sel=S.sel.filter(id=>all().some(p=>p.id===id)).slice(0,n);
+  $("chips").innerHTML="";
+  OPTS.forEach(([m,c])=>{const b=document.createElement("button");b.className="chip"+(m===S.dur?" on":"");b.innerHTML=m+" dk<small>"+c+" pratik</small>";b.onclick=()=>{S.dur=m;save();renderHome()};$("chips").append(b)});
+  $("cnt").textContent="En fazla "+n+" pratik seçebilirsin ("+S.sel.length+"/"+n+"). Seçtiğin sırayla yapacaksın.";
+  $("list").innerHTML="";
+  all().forEach(p=>{
+    const i=S.sel.indexOf(p.id),r=document.createElement("div");r.className="item"+(i>=0?" on":"");
+    r.innerHTML='<div class="badge">'+(i>=0?i+1:"")+'</div>';
+    const sp=document.createElement("span");sp.textContent=p.t;r.append(sp);
+    if(p.custom){const b=document.createElement("button");b.className="del";b.textContent="×";b.onclick=e=>{e.stopPropagation();S.custom=S.custom.filter(x=>x.id!==p.id);S.sel=S.sel.filter(x=>x!==p.id);save();renderHome()};r.append(b)}
+    r.onclick=()=>{if(i>=0)S.sel.splice(i,1);else if(S.sel.length<n)S.sel.push(p.id);save();renderHome()};
+    $("list").append(r)});
+  $("start").disabled=S.sel.length===0;
+  $("start").textContent=S.sel.length?"Antrenmana başla ("+S.sel.length+" pratik)":"Önce en az bir pratik seç";
+}
+$("addBtn").onclick=add;$("inp").addEventListener("keydown",e=>{if(e.key==="Enter")add()});
+function add(){const v=$("inp").value.trim();if(!v)return;S.custom.push({id:"c"+Date.now(),t:v,d:"Kendi eklediğin pratik. Sakin ve rahat bir tempoda yap.",custom:true});$("inp").value="";save();renderHome()}
+
+let AC=null;
+function tone(f,t0,dur,vol){if(!AC)return;const o=AC.createOscillator(),g=AC.createGain();o.type="sine";o.frequency.value=f;o.connect(g);g.connect(AC.destination);const t=AC.currentTime+t0;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol||.25,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.start(t);o.stop(t+dur+.05)}
+const chime=()=>{tone(659,0,.35);tone(880,.15,.5)};
+const fanfare=()=>{[523,659,784,1047].forEach((f,i)=>tone(f,i*.16,.6))};
+
+const WORDS="merhaba selam anne abla arkadaş canım güzel teşekkürler lütfen günaydın hoşgeldin nasılsın sevgili mutlu yumuşak nazik hafif sakin huzur sevgi mavi pembe beyaz yeşil sarı mor lila turuncu gri kırmızı elma armut kiraz çilek limon portakal mandalina muz üzüm nar çiçek gül lale papatya menekşe yasemin orkide sümbül zambak karanfil deniz göl nehir yağmur bulut gökyüzü yıldız ay güneş rüzgar mutfak salon balkon pencere perde halı yastık battaniye lamba ayna kahve çay süt limonata bal reçel peynir zeytin ekmek simit kalem defter kitap dergi mektup masa sandalye çanta cüzdan anahtar telefon mesaj müzik şarkı melodi dans film fotoğraf resim yazı meleğim hayat yolculuk macera hayal umut cesaret güç ışık gülümseme yarın bugün akşam sabah gece öğle hafta yıl mevsim dün bahar yaz sonbahar kış kar sis sıcak serin ılık nemli mahalle sokak cadde park bahçe köprü liman sahil plaj orman otobüs vapur tren uçak bisiklet taksi yol durak istasyon bilet market pazar fırın eczane kütüphane müze sinema tiyatro kafe restoran elbise etek bluz ceket mont atkı eldiven şapka gözlük küpe yüzük kolye bilezik saat parfüm ruj krem tarak toka saç mümkün mutlaka belki elbette gerçekten aslında herhalde tabii sanırım galiba merak sevinç heyecan neşe keyif huzurlu tatlı sıcacık yumuşacık minnacık melek prenses peri masal hikaye şiir roman rüya uyku dinlenme nefes ses söz konuşma dinleme sessizlik yankı titreşim ritim ton ilerleme başarı gurur özgüven sabır azim kararlılık deneme pratik alışkanlık minnettar memnun mükemmel muhteşem harika şahane inanılmaz nefis leziz enfes yavaş sakince nazikçe yumuşakça hafifçe usulca sessizce tatlıca güzelce özenle lavanta nane melisa ıhlamur kekik tarçın zencefil vanilya karamel çikolata dondurma pasta kurabiye börek mantı çorba salata meyve tereyağı yoğurt nine dede teyze hala amca dayı kuzen komşu misafir dost öğretmen doktor hemşire avukat mühendis yazar ressam müzisyen şarkıcı aktris İstanbul Ankara İzmir Sakarya Adapazarı Bursa Antalya Trabzon Mersin Eskişehir".split(" ");
+const CP=[["Sabah olur, ışık dolar odama,", "Yeni bir umut ekilir yoluma."], ["Rüzgâr eser, yapraklar dans eder,", "Gönlüm sessiz bir türkü seyreder."], ["Sesim akar bir dere gibi sakin,", "Her sözüm bir çiçek kadar yakın."], ["Martılar uçar denizin üstünde,", "Ben de hafiflerim kendi sesimde."], ["Ay doğar gökte usulca gelir,", "Gecenin sesi bana huzur verir."], ["Derin bir nefes alıyorum yavaşça,", "Kendime gülümsüyorum sakince."], ["Sesimi seviyorum, ona bakıyorum,", "Her gün biraz daha ona ısınıyorum."], ["Yağmur yağar, toprak kokar ince,", "Umut yeşerir, sabır olur hece hece."], ["Kelimeler dilimde bal gibi akar,", "Her cümle içimde bir ışık yakar."], ["Yavaş konuşurum, acelem yok,", "Kendime yetiyorum, korkum yok."], ["Papatya açar sabırla, sessizce,", "Ben de açarım, yavaş yavaş, nazikçe."], ["Sesim bir köprü, kalbimden dünyaya,", "Her gün biraz daha yaklaşır ona."], ["Gökkuşağı çıkar yağmurdan sonra,", "Güzel şeyler gelir sabırdan sonra."], ["Nefesim bir dalga gibi iner, çıkar,", "Sesim onunla yumuşayıp akar."], ["Güneş doğar dağların ardından,", "Umut doğar kendi yüreğimden."], ["Bugün kendime nazik davranıyorum,", "Sesimle birlikte büyüyorum."], ["Bulutlar geçer, gökyüzü kalır,", "Sabreden gönül sonunda güler."], ["Çay demlenir, buhar tüter sabah,", "Sesim ısınır, gönlüm olur ferah."], ["Her hecede biraz daha özgürüm,", "Kendi sesimle güzelim, güçlüyüm."], ["Yıldızlar göz kırpar geceye,", "Ben de gülümserim kendi sesime."], ["Tatlı bir rüzgâr eser saçlarımda,", "Gülüşüm çiçek açar yanağımda."], ["Mum ışığı titrer, oda sıcacık,", "Sesim de olur bugün yumuşacık."], ["Yürürüm sahilde, dalgalar konuşur,", "Kalbim onlarla sessizce barışır."], ["Sabah ışığı vurur yüzüme,", "Selam veririm yeni günüme."], ["Mavi bir gökyüzü, pembe bir bulut,", "Kalbimde sevinç, dilimde umut."], ["Bir kelime söylerim, bir çiçek açar,", "Kalbimde sevinç, gözümde ışık yanar."], ["Sessizce dinlerim kendi sesimi,", "Sevgiyle sararım her nefesimi."], ["Yaprak düşer, sonbahar gelir,", "Yeni güzellik hep kapıda beklenir."], ["Ellerimi kalbime koyup nefes alırım,", "Sakin bir gölün kıyısında kalırım."], ["Yorgun olsam da bir adım atarım,", "Kendime sarılır, yoluma çıkarım."], ["Gece sessiz, yıldızlar parlar,", "Sesim de içimde huzurla çağlar."], ["Gülümseyerek konuşurum sesimle,", "Dünya daha güzel görünür bu sesle."], ["Akşam çöker, camda ışık yanıyor,", "Gönlüm bugünden memnun, gülümsüyor."], ["Sesim, sen benimlesin, ben de seninle,", "Yürürüz bu yolu birlikte, sevgiyle."], ["Bir dilek tutarım yıldız kayınca,", "Her şey güzelleşir insan inanınca."], ["Kış gelir, kar yağar, dünya sessiz,", "Ben sesimi severim, yüreğim endişesiz."], ["Toprak kokusu sarar her yanı,", "Huzur bulur bu yorgun canı."], ["Gökyüzüne bakar, derin nefes alırım,", "Dünya benim, bu sesle ben de varım."]];
+const POEMS=(()=>{let a=2026;const r=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+ const out=[],seen=new Set();
+ while(out.length<200){const ix=[];while(ix.length<3){const k=Math.floor(r()*CP.length);if(!ix.includes(k))ix.push(k)}
+  const key=[...ix].sort((x,y)=>x-y).join();if(seen.has(key))continue;seen.add(key);
+  out.push(ix.map(k=>CP[k].join("\n")).join("\n\n"))}
+ return out})();
+function todayPoem(){
+  if(!S.poemStart){S.poemStart=ds(new Date());save()}
+  const [y,m,d]=S.poemStart.split("-").map(Number),n=new Date();
+  const diff=Math.round((Date.UTC(n.getFullYear(),n.getMonth(),n.getDate())-Date.UTC(y,m-1,d))/864e5);
+  const i=((diff%200)+200)%200;return{i,t:POEMS[i]}}
+let cur="",wn=0;
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function nextWord(){
+  if(!Array.isArray(S.wq)||!S.wq.length){S.wq=shuf(WORDS);if(S.wq[0]===cur&&S.wq.length>1)[S.wq[0],S.wq[1]]=[S.wq[1],S.wq[0]]}
+  cur=S.wq.shift();wn++;save()}
+function showWord(){$("wtxt").textContent=cur;$("wcnt").textContent="Bu turda "+(WORDS.length-S.wq.length)+" / "+WORDS.length+" kelime"}
+$("wnext").onclick=()=>{nextWord();showWord();tone(988,0,.15,.12)};
+let mr=null,stream=null,rtick=null,rstart=0,recs=[],rn=0;
+function stopRec(){if(mr&&mr.state==="recording")mr.stop()}
+function clearRecs(){recs.forEach(u=>URL.revokeObjectURL(u));recs=[];rn=0;$("rl").innerHTML="";$("rt").textContent="00:00";$("rerr").textContent="";$("rbtn").textContent="🎙️ Kaydı başlat";$("rbtn").classList.remove("recb")}
+function addRec(blob,secs){
+  const u=URL.createObjectURL(blob);recs.push(u);rn++;
+  const d=document.createElement("div");d.className="rc-item";
+  d.innerHTML="Kayıt "+rn+" · "+pad(Math.floor(secs/60))+":"+pad(secs%60);
+  const a=document.createElement("audio");a.controls=true;a.src=u;d.append(a);
+  $("rl").prepend(d)}
+$("rbtn").onclick=async()=>{
+  if(mr&&mr.state==="recording"){mr.stop();return}
+  try{
+    if(!navigator.mediaDevices||!window.MediaRecorder)throw 0;
+    stream=await navigator.mediaDevices.getUserMedia({audio:true})
+  }catch(e){$("rerr").textContent="Mikrofon kullanılamadı. Tarayıcıda mikrofon iznini kontrol et.";return}
+  $("rerr").textContent="";const chunks=[];mr=new MediaRecorder(stream);
+  mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+  mr.onstop=()=>{clearInterval(rtick);stream.getTracks().forEach(t=>t.stop());
+    addRec(new Blob(chunks,{type:mr.mimeType||"audio/webm"}),Math.max(1,Math.round((Date.now()-rstart)/1000)));
+    $("rbtn").textContent="🎙️ Yeni kayıt başlat";$("rbtn").classList.remove("recb")};
+  mr.start();rstart=Date.now();
+  rtick=setInterval(()=>{const t=Math.floor((Date.now()-rstart)/1000);$("rt").textContent=pad(Math.floor(t/60))+":"+pad(t%60)},250);
+  $("rbtn").textContent="⏹️ Kaydı durdur";$("rbtn").classList.add("recb")};
+const HW=["Merhaba, nasılsınız?", "Günaydın, bugün hava çok güzel.", "Teşekkür ederim, çok naziksiniz.", "Rica ederim, ne demek.", "Bir dakika lütfen, hemen geliyorum.", "Affedersiniz, bu adrese nasıl gidebilirim?", "Hesabı alabilir miyim lütfen?", "Bu elbisenin başka rengi var mı?", "Kartla ödeme yapabilir miyim?", "Poşet istemiyorum, teşekkürler.", "Randevumu yarına alabilir miyiz?", "Sizi tekrar aramam gerekiyor.", "Alo, merhaba, ben Elif.", "Mesajınızı aldım, akşam dönüş yapacağım.", "Toplantı saat üçte başlıyor.", "Raporu bugün akşama kadar göndereceğim.", "Bu konuyu birlikte konuşabiliriz.", "Fikrinizi merak ediyorum.", "Çok güzel bir öneri, bence de öyle.", "Hiç sorun değil, yardımcı olurum.", "Bugün seni çok özledim.", "Hafta sonu için planın var mı?", "Birlikte yürüyüşe çıkalım mı?", "Bu şarkıyı çok seviyorum.", "Yeni aldığım kitap harika.", "Kahvaltıda peynir ve zeytin yedim.", "Akşam yemeği için çorba yapıyorum.", "Çayın demi tam kıvamında.", "Pencereyi biraz açabilir misin?", "Sabah erkenden uyandım.", "Bugün kendimle gurur duyuyorum.", "Sesim her gün biraz daha rahat.", "Yavaş konuşmak bana iyi geliyor.", "Derin bir nefes alıp konuşmaya başlıyorum.", "Cümlelerimi yumuşak ve akıcı söylüyorum.", "Kelimeleri acele etmeden söylüyorum.", "Gülümseyerek konuşmak sesimi hafifletiyor.", "Bugün de bir adım daha ilerledim.", "Kendime sabırlı davranıyorum.", "Her gün biraz daha iyi oluyorum.", "Bu benim sesim ve onu seviyorum.", "Hoş geldiniz, buyurun oturun.", "Size nasıl yardımcı olabilirim?", "Bir şey içer misiniz?", "Şekerli mi şekersiz mi olsun?", "Menüye bakabilir miyiz?", "Bu akşam için masa ayırtmak istiyorum.", "Sipariş vermek istiyorum.", "Çok lezzetli olmuş, ellerinize sağlık.", "Bugün yağmur yağacak gibi görünüyor.", "Şemsiyeni yanına almayı unutma.", "Otobüs birkaç dakika sonra gelecek.", "İstasyona kadar yürüyebiliriz.", "Bilet almam gerekiyor.", "Kütüphaneden iki kitap ödünç aldım.", "Fotoğraf çekmemi ister misin?", "Bu akşam film izleyelim mi?", "Doğum günün kutlu olsun!", "İyi geceler, tatlı rüyalar.", "Yarın görüşmek üzere, kendine iyi bak.", "Görüşürüz."];
+const SENT=(()=>{let a=77;const r=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+ const sh=x=>{x=x.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x};
+ const X=(p,q,f)=>{const o=[];p.forEach(u=>q.forEach(v=>o.push(f(u,v))));return o};
+ const T=["Bugün","Yarın","Bu akşam","Sabah","Hafta sonu","Öğleden sonra","Cuma günü","Akşama doğru"];
+ const D=["markete","pazara","eczaneye","kütüphaneye","parka","sahile","kafeye","sinemaya","bahçeye","fırına","çarşıya","kitapçıya","arkadaşıma","anneme","teyzeme","şehir merkezine"];
+ const O=["bir çay","bir kahve","bir bardak su","bir limonata","bir simit","bir dilim pasta","bir kase çorba","bir tabak salata","bir tatlı","bir porsiyon mantı","bir bardak süt","bir tost"];
+ const W=["güzel","sıcak","serin","aydınlık","huzurlu","sakin","ılık"];
+ const P=["canım","abla","anne","tatlım","arkadaşım","teyze","komşum","sevgilim"];
+ const F=["iyi","mutlu","huzurlu","güçlü","rahat","neşeli","sakin","enerjik","özgür","umutlu","güvende","hafif"];
+ const A2=["yumuşak","hafif","rahat","güçlü","net","sakin"];
+ const TP=["sabah","akşam","öğleden sonra","hafta sonu","gün"];
+ const AC=["kısa bir yürüyüş yaparım","bir bardak su içerim","biraz mırıldanırım","derin bir nefes alırım","sesimi ısıtırım","kendime gülümserim","bir şiir okurum","kitabımdan birkaç sayfa okurum"];
+ const PP=["annemle","arkadaşlarımla","kardeşimle","komşumla","teyzemle","ablamla"];
+ const PA=["kahve içeceğim","alışverişe çıkacağım","sinemaya gideceğim","yürüyüş yapacağım","yemek yiyeceğim","sahilde oturacağım","müzeyi gezeceğim"];
+ const G=[HW,
+  X(W,[0,1],(w,k)=>k?"Bugün hava çok "+w+".":"Ne kadar "+w+" bir gün!"),
+  X(P,[0,1],(p,k)=>k?"İyi akşamlar "+p+", günün nasıl geçti?":"Merhaba "+p+", bugün nasılsın?"),
+  X(F,[0,1],(f,k)=>k?"Kendimi "+f+" hissetmek çok güzel.":"Bugün kendimi çok "+f+" hissediyorum."),
+  X(TP,AC,(t,c)=>"Her "+t+" "+c+"."),
+  X(T,A2,(t,c)=>t+" sesim daha "+c+" çıkıyor."),
+  X(O,[0,1,2],(o,k)=>["Merhaba, "+o+" alabilir miyim?","Lütfen "+o+" istiyorum.","Bana "+o+" getirir misiniz?"][k]),
+  X(T,D,(t,d)=>t+" "+d+" gidiyorum."),
+  X(T,D,(t,d)=>t+" "+d+" gitmek istiyorum."),
+  X(X(T,PP,(t,p)=>t+" "+p),PA,(u,v)=>u+" "+v+".")
+ ].map((g,i)=>i?sh(g):g);
+ const out=[];for(let k=0;out.length<600;k++){let any=false;G.forEach(g=>{if(out.length<600&&k<g.length){out.push(g[k]);any=true}});if(!any)break}
+ return[...new Set(out)]})();
+let cs="";
+function nextSent(){
+  if(!Array.isArray(S.sq)||!S.sq.length){S.sq=shuf(SENT);if(S.sq[0]===cs&&S.sq.length>1)[S.sq[0],S.sq[1]]=[S.sq[1],S.sq[0]]}
+  cs=S.sq.shift();save()}
+function showSent(){$("stx").textContent=cs;$("scnt").textContent="Bu turda "+(SENT.length-S.sq.length)+" / "+SENT.length+" cümle"}
+$("snext").onclick=()=>{nextSent();showSent();tone(988,0,.15,.12)};
+let plan=[],idx=0,total=0,end=0,tick=null;
+function begin(){
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume()}catch(e){}
+  clearRecs();cs="";cur="";wn=0;plan=S.sel.map(id=>all().find(p=>p.id===id)).filter(Boolean);idx=0;total=Math.round(S.dur*60/plan.length);show("run");go()}
+function go(){
+  stopRec();
+  const p=plan[idx];$("step").textContent="Pratik "+(idx+1)+" / "+plan.length;$("ttl").textContent=p.t;$("dsc").textContent=p.d;$("wd").classList.toggle("hide",p.id!=="d3");$("pm").classList.toggle("hide",p.id!=="d4");$("rc").classList.toggle("hide",p.id!=="d5");$("sc").classList.toggle("hide",p.id!=="d6");if(p.id==="d6"){if(!cs)nextSent();showSent()}if(p.id==="d4"){const q=todayPoem();$("pt").textContent="Günün şiiri · "+(q.i+1)+" / 200";$("ptx").textContent=q.t}if(p.id==="d3"){if(!cur)nextWord();showWord()}
+  $("next").textContent=idx===plan.length-1?"Bitirdim, antrenmanı tamamla ✓":"Bitirdim, sıradaki ✓";
+  end=Date.now()+total*1000;clearInterval(tick);tick=setInterval(upd,250);upd()}
+function upd(){
+  const left=Math.max(0,Math.ceil((end-Date.now())/1000));
+  $("tm").textContent=pad(Math.floor(left/60))+":"+pad(left%60);
+  $("bar").style.width=(100*(1-left/total))+"%";
+  if(left<=0)done()}
+function done(){
+  stopRec();
+  clearInterval(tick);
+  if(idx<plan.length-1){chime();idx++;go()}
+  else{fanfare();S.days[ds(new Date())]=1;save();const st=streakText();$("num2").textContent=st.c;$("msg2").textContent=st.m;show("fin")}}
+$("start").onclick=begin;$("next").onclick=done;
+$("quit").onclick=()=>{stopRec();clearInterval(tick);renderHome();show("home")};
+$("home2").onclick=()=>{renderHome();show("home")};
+
+const MSG=["Sesin seni bekliyor canım, bugün küçük bir antrenman yapalım mı? 💜","Ses tellerin dedi ki: “Beni unuttun mu?” 🎤","Bugün henüz antrenman yok. Serin göz yaşları içinde! 😭🔥","Sadece 10 dakika! Sonra rahatça çay içebilirsin. ☕","Her gün biraz, zamanla büyük fark yaratır. Sen harikasın! ✨","Rezonans kendiliğinden gelmiyor, hadi gel “mmm” yapalım. 😄","Bugünün antrenmanı seni bekliyor, kaçış yok! 🏃‍♀️💨","Kendine nazik ol ama antrenmanı da atlama. 🌸","Sesin bir gün seni çok gururlandıracak. Bugün ona yatırım yap! 💗","Duş sesin kadar iyi olabilir, bunu kanıtla! 🚿🎶","Küçük adımlar, büyük değişim. Bugünkü adımını at! 🏳️‍⚧️","Mırıldanmak bedava, hadi başlayalım! 🐝"];
+function renderRem(){
+  const r=S.rem,ok="Notification" in window&&Notification.permission==="granted";
+  $("remOn").checked=r.on;
+  $("remNote").textContent=r.on?"Bugün antrenman yapmadıysan 3 saatte bir (09:00–22:00 arası) motive edici bir mesaj göndereceğim."+(ok?"":" Sistem bildirimi kapalıysa uygulama açıkken ekranda uyarı gösteririm."):"Açarsan, o gün antrenman yapmadığında 3 saatte bir hatırlatırım.";
+}
+$("remOn").onchange=async e=>{
+  S.rem.on=e.target.checked;S.lastRem=Date.now();
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)()}catch(x){}
+  if(S.rem.on&&"Notification" in window&&Notification.permission==="default"){try{await Notification.requestPermission()}catch(x){}}
+  save();renderRem()};
+function pick(){let m;do{m=Math.floor(Math.random()*MSG.length)}while(m===S.lastMsg&&MSG.length>1);S.lastMsg=m;return MSG[m]}
+function notify(t,b){
+  chime();const bn=$("ban");bn.textContent=t+" "+b;bn.classList.remove("hide");
+  bn.onclick=()=>bn.classList.add("hide");setTimeout(()=>bn.classList.add("hide"),12000);
+  try{if("Notification" in window&&Notification.permission==="granted"&&document.hidden)new Notification(t,{body:b})}catch(x){}}
+function checkRem(){
+  if(!S.rem.on||S.days[ds(new Date())])return;
+  const h=new Date().getHours();if(h<9||h>=22)return;
+  if(!S.lastRem){S.lastRem=Date.now();save();return}
+  if(Date.now()-S.lastRem<3*36e5)return;
+  S.lastRem=Date.now();save();notify("Ses Antrenmanı",pick())}
+setInterval(checkRem,30000);
+renderRem();renderHome();
+</script>
+</body>
+</html>
